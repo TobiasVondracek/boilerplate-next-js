@@ -3,6 +3,7 @@ import { getHeroUnit } from "../lib/kontentClient";
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next';
 import { HeroUnit } from '../models/content-types/hero_unit';
 import { ParsedUrlQuery } from 'querystring'
+import hero_unit from '../layouts/hero_unit';
 
 interface IParams extends ParsedUrlQuery {
     slug: string[]
@@ -11,13 +12,7 @@ interface IParams extends ParsedUrlQuery {
 
 const Home: NextPage<IndexProps> = ({ heroUnit }) => {
   return (
-    <main >
-      <div className={styles.hero}>
-        <h1 className="append-dot">{heroUnit.elements.title.value}</h1>
-        <div className={styles.summary} dangerouslySetInnerHTML={{ __html: heroUnit.elements.marketingMessage.value }}>
-        </div>
-      </div>
-    </main>
+    <hero_unit heroUnit />
   )
 }
 
