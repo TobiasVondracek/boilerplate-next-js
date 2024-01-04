@@ -1,16 +1,20 @@
 import '../styles/globals.css'
+import type { ReactElement, ReactNode } from 'react'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <div className="layout">
-      <Component {...pageProps} />
-      <Head>
-        <title>Spolek boilerplate</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-    </div>
-  )
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+ 
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
 }
 
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout ?? ((page) => page)
+ 
+  return getLayout(<Component {...pageProps} />)
+}

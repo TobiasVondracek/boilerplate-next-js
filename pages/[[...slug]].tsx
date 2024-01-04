@@ -1,26 +1,34 @@
 import styles from '../styles/Home.module.css'
 import { getHeroUnit } from "../lib/kontentClient";
+import type { ReactElement } from 'react'
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next';
-import { HeroUnit } from '../models/content-types/hero_unit';
 import { ParsedUrlQuery } from 'querystring'
-import hero_unit from '../layouts/hero_unit';
+import { IndexProps } from '../models/indexProps';
+import HeroLayout  from '../layouts/HeroLayout'
+import type { NextPageWithLayout } from './_app'
 
 interface IParams extends ParsedUrlQuery {
     slug: string[]
 }
 
 
-const Home: NextPage<IndexProps> = ({ heroUnit }) => {
-  return (
-    <hero_unit heroUnit />
-  )
+const Page: NextPageWithLayout = () => {
+  return <p>hello world</p>
 }
-
-export default Home
-
-interface IndexProps {
-  heroUnit: HeroUnit;
+ 
+Page.getLayout = function getLayout(page: ReactElement) {
+  if(page.props.heroUnit){
+    return (
+      <div>
+        <HeroLayout {...page.props.heroUnit} />
+      </div>
+    )
+  }
+  return <p>no component</p>
 }
+ 
+export default Page
+
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const arr: string[][] = [['hero1'], ['hero2'], []]
